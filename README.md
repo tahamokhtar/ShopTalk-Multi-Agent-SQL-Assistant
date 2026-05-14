@@ -4,7 +4,7 @@ ShopTalk Pro is an advanced AI system designed to enable non-technical users to 
 🚀 Technologies Used
 Language: Python 🐍
 
-LLM: Google Gemini 3.0 Flash (for rapid inference and high accuracy) 🧠
+LLM: Google Gemini 2.5 Flash (for rapid inference and high accuracy) 🧠
 
 Orchestration: LangGraph (Multi-Agent System) 🕸️
 
