@@ -1,20 +1,30 @@
 import os
 import sqlite3
+import langchain_community
 import pandas as pd
 from typing import TypedDict
 from dotenv import load_dotenv
 from langgraph.graph import StateGraph, END
-from langchain_groq import ChatGroq
+
+# --- التعديلات الجديدة للـ API والـ Caching ---
+from langchain_google_genai import ChatGoogleGenerativeAI
+from langchain_core.globals import set_llm_cache
+from langchain_community.cache import SQLiteCache
 from database_utils import get_db_schema
 
 load_dotenv()
 
-# 1. إرضاء Pylance بتحويل المفتاح لنص إجباري
-# مكتبة Groq هتقرأ المفتاح تلقائياً من ملف .env
-llm = ChatGroq(
-    model="llama-3.3-70b-versatile"
+# تفعيل الـ LLM Caching في ملف قاعدة بيانات منفصل
+set_llm_cache(SQLiteCache(database_path="llm_cache.db"))
+
+# إعداد Gemini 3.0 Flash 
+llm = ChatGoogleGenerativeAI(
+    model="gemini-2.5-flash",
+    api_key="AIzaSyBcfW-6BSTfIJI5SsEY54I6bRqvzt0fN-s",
+    temperature=0  # درجة حرارة صفر مهمة جداً هنا عشان توليد الـ SQL يكون دقيق ومفيهوش إبداع يكسر الـ Syntax
 )
 
+# ... (باقي كود الـ AgentState والـ Nodes زي ما هو بدون تغيير) ...
 class AgentState(TypedDict, total=False): 
     question: str
     schema: str
